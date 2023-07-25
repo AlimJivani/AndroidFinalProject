@@ -14,20 +14,31 @@
         android:fontFamily="serif-monospace"
         android:text="Sign Up"
         android:textColor="@color/white"
-        android:textSize="60sp"
+        android:textSize="96sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/cardView"
+        app:layout_constraintBottom_toTopOf="@+id/pBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/pBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminateTint="@color/white"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/guideline3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.931" />
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent=".45" />
+        app:layout_constraintGuide_percent=".48" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
@@ -48,6 +59,8 @@
                 android:layout_width="0dp"
                 android:layout_height="62dp"
                 android:layout_margin="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:background="@drawable/input_text_bg"
                 android:drawableStart="@drawable/email_icon"
                 android:drawableTint="@color/them_red"
@@ -67,6 +80,8 @@
                 android:layout_width="0dp"
                 android:layout_height="62dp"
                 android:layout_margin="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:background="@drawable/input_text_bg"
                 android:drawableStart="@drawable/password_icon"
                 android:drawableTint="@color/them_red"
@@ -87,6 +102,8 @@
                 android:layout_width="0dp"
                 android:layout_height="62dp"
                 android:layout_margin="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:background="@drawable/input_text_bg"
                 android:drawableStart="@drawable/password_icon"
                 android:drawableTint="@color/them_red"
@@ -96,49 +113,18 @@
                 android:padding="10dp"
                 android:textColor="@color/black"
                 android:textColorHint="@color/black"
-                app:layout_constraintBottom_toTopOf="@+id/forgotPassword"
+                app:layout_constraintBottom_toTopOf="@+id/signUpButtonClick"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.545"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/signUpPasswordTextInput" />
-
-            <TextView
-                android:id="@+id/forgotPassword"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:text="Forgot Password?"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toTopOf="@+id/signUpClickButton"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.028"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/signUpCPasswordTextInput" />
-
-            <ProgressBar
-                android:id="@+id/pBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="2dp"
-                android:layout_marginTop="2dp"
-                android:layout_marginEnd="2dp"
-                android:layout_marginBottom="2dp"
-                android:indeterminateTint="@color/them_red"
-                android:visibility="gone"
-                app:layout_constraintBottom_toTopOf="@+id/signUpButtonClick"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/forgotPassword" />
 
             <Button
                 android:id="@+id/signUpButtonClick"
                 android:layout_width="0dp"
                 android:layout_height="62dp"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="8dp"
                 android:layout_marginEnd="32dp"
-                android:layout_marginBottom="8dp"
                 android:backgroundTint="@color/them_red"
                 android:drawableEnd="@drawable/login_icon"
                 android:drawableTint="@color/white"
@@ -149,12 +135,10 @@
                 app:cornerRadius="12dp"
                 app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.34"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/forgotPassword"
-                />
-
-
+                app:layout_constraintTop_toBottomOf="@+id/signUpCPasswordTextInput"
+                app:layout_constraintVertical_bias="0.454" />
 
             <LinearLayout
                 android:id="@+id/linearLayout2"

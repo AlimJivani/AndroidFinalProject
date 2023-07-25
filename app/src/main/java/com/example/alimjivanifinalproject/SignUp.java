@@ -20,6 +20,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.SignInMethodQueryResult;
 
 import java.util.concurrent.CompletableFuture;
@@ -44,7 +45,6 @@ public class SignUp extends AppCompatActivity {
         signUpEmailTextInput = findViewById(R.id.signUpEmailTextInput);
         signUpPasswordTextInput = findViewById(R.id.signUpPasswordTextInput);
         signUpCPasswordTextInput = findViewById(R.id.signUpCPasswordTextInput);
-        forgotPassword = findViewById(R.id.forgotPassword);
         loginClick = findViewById(R.id.loginClick);
         pBar = findViewById(R.id.pBar);
 
@@ -59,6 +59,9 @@ public class SignUp extends AppCompatActivity {
 
                 if (validateUser(email, password, cPassword)){
                     registerUser(email, password);
+                    Intent intent = new Intent(SignUp.this, login.class);
+                    startActivity(intent);
+                    finish();
                 } else{
                     pBar.setVisibility(View.GONE);
                 }
@@ -80,10 +83,32 @@ public class SignUp extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            pBar.setVisibility(View.GONE);
-                            Toast.makeText(SignUp.this, "Successfully SignUp",
-                                    Toast.LENGTH_SHORT).show();
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            if (user != null) {
+                                // Send verification email
+                                user.sendEmailVerification()
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> verificationTask) {
+                                                if (verificationTask.isSuccessful()) {
+                                                    // Verification email sent successfully
+                                                    pBar.setVisibility(View.GONE);
+                                                    Toast.makeText(SignUp.this, "Successfully SignUp. Verification email sent.",
+                                                            Toast.LENGTH_SHORT).show();
+                                                } else {
+                                                    // Failed to send verification email
+                                                    Toast.makeText(SignUp.this, "Failed to send verification email.",
+                                                            Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+                                        });
+                            } else {
+                                // User object is null
+                                Toast.makeText(SignUp.this, "Authentication failed.",
+                                        Toast.LENGTH_SHORT).show();
+                            }
                         } else {
+                            // Failed to create user account
                             Toast.makeText(SignUp.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         }
@@ -91,6 +116,7 @@ public class SignUp extends AppCompatActivity {
                     }
                 });
     }
+
 
     private boolean validateUser(String email, String password, String cPassword){
         final boolean[] checkErrors = {true};
