@@ -32,8 +32,9 @@ public class SignUp extends AppCompatActivity {
     Button signUpButtonClick;
     EditText signUpEmailTextInput, signUpPasswordTextInput, signUpCPasswordTextInput;
     FirebaseAuth mAuth;
-    TextView forgotPassword, loginClick;
+    TextView loginClick;
     ProgressBar pBar;
+    FirebaseUser currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,39 +43,49 @@ public class SignUp extends AppCompatActivity {
 
         signUpButtonClick = findViewById(R.id.signUpButtonClick);
         mAuth = FirebaseAuth.getInstance();
-        signUpEmailTextInput = findViewById(R.id.signUpEmailTextInput);
-        signUpPasswordTextInput = findViewById(R.id.signUpPasswordTextInput);
-        signUpCPasswordTextInput = findViewById(R.id.signUpCPasswordTextInput);
-        loginClick = findViewById(R.id.loginClick);
-        pBar = findViewById(R.id.pBar);
+        currentUser = mAuth.getCurrentUser();
 
-        signUpButtonClick.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                pBar.setVisibility(View.VISIBLE);
-                String email, password, cPassword;
-                email =  String.valueOf(signUpEmailTextInput.getText());
-                password =  String.valueOf(signUpPasswordTextInput.getText());
-                cPassword =  String.valueOf(signUpCPasswordTextInput.getText());
+        if (currentUser != null) {
+            // User is logged in, navigate to ProductDetails page
+            Intent intent = new Intent(this, productDisplay.class);
+            startActivity(intent);
+            finish();
+        }else{
+            signUpEmailTextInput = findViewById(R.id.signUpEmailTextInput);
+            signUpPasswordTextInput = findViewById(R.id.signUpPasswordTextInput);
+            signUpCPasswordTextInput = findViewById(R.id.signUpCPasswordTextInput);
+            loginClick = findViewById(R.id.loginClick);
+            pBar = findViewById(R.id.pBar);
 
-                if (validateUser(email, password, cPassword)){
-                    registerUser(email, password);
+            signUpButtonClick.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    pBar.setVisibility(View.VISIBLE);
+                    String email, password, cPassword;
+                    email =  String.valueOf(signUpEmailTextInput.getText());
+                    password =  String.valueOf(signUpPasswordTextInput.getText());
+                    cPassword =  String.valueOf(signUpCPasswordTextInput.getText());
+
+                    if (validateUser(email, password, cPassword)){
+                        registerUser(email, password);
+                        Intent intent = new Intent(SignUp.this, login.class);
+                        startActivity(intent);
+                        finish();
+                    } else{
+                        pBar.setVisibility(View.GONE);
+                    }
+                }
+            });
+
+            loginClick.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
                     Intent intent = new Intent(SignUp.this, login.class);
                     startActivity(intent);
                     finish();
-                } else{
-                    pBar.setVisibility(View.GONE);
                 }
-            }
-        });
-
-        loginClick.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(SignUp.this, login.class);
-                startActivity(intent);
-            }
-        });
+            });
+        }
     }
 
     private void registerUser(String email, String password) {

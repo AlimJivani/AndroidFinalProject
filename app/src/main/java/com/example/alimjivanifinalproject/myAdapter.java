@@ -1,7 +1,10 @@
 package com.example.alimjivanifinalproject;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class myAdapter extends RecyclerView.Adapter<myAdapter.MyViewHolder> {
 
@@ -22,7 +26,7 @@ public class myAdapter extends RecyclerView.Adapter<myAdapter.MyViewHolder> {
     public myAdapter(Context context, ArrayList<productData> products, RecyclerView recyclerView) {
         this.context = context;
         this.products = products;
-        this.recyclerView = this.recyclerView;
+        this.recyclerView = recyclerView;
     }
 
     @NonNull
@@ -31,39 +35,31 @@ public class myAdapter extends RecyclerView.Adapter<myAdapter.MyViewHolder> {
 
         View v = LayoutInflater.from(context).inflate(R.layout.product, parent, false);
 
-//        v.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                int position = recyclerView.getChildAdapterPosition(v);
-//                if (position != RecyclerView.NO_POSITION) {
-//                    productData clickedProduct = products.get(position);
-//                    Intent intent = new Intent(context, productDetail.class);
-//                    intent.putExtra("product_id", clickedProduct.getId());
-//                    context.startActivity(intent);
-//                }
-//            }
-//        });
-
-
+        v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int position = recyclerView.getChildAdapterPosition(v);
+                productData clickedProduct = products.get(position);
+                Intent intent = new Intent(context, productDetail.class);
+                intent.putExtra("productId", clickedProduct.getId());
+                context.startActivity(intent);
+            }
+        });
         return new MyViewHolder(v);
-
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
         productData pData = products.get(position);
+        List<String> imageNames = pData.getImage();
+        String imageName1 = imageNames.get(0);
 
-        int resourceId = context.getResources().getIdentifier(pData.getImage(), "drawable", context.getPackageName());
-
-        holder.productImage.setImageResource(resourceId);
+        int imageResourceId1 = context.getResources().getIdentifier(imageName1, "drawable", context.getPackageName());
+        holder.productImage.setImageResource(imageResourceId1);
         holder.productName.setText(pData.getName());
-
-        String limitedDescription = pData.getLimitedDescription(15);
-        holder.productDescription.setText(limitedDescription);
-
         holder.productPrice.setText(pData.getPrice());
-
+        holder.productDescription.setText(pData.getDescription());
     }
 
     @Override

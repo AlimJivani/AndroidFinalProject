@@ -21,6 +21,7 @@ public class forgotPassword extends AppCompatActivity {
 
     Button fPasswordButtonClick, fPasswordBack;
     EditText fPasswordEmailTextInput;
+
     FirebaseAuth mAuth;
     ProgressBar pBar;
 
@@ -43,6 +44,15 @@ public class forgotPassword extends AppCompatActivity {
                 if (validateUser(email)){
                     resetPassword(email);
                 }
+            }
+        });
+
+        fPasswordBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(forgotPassword.this, login.class);
+                startActivity(intent);
+                finish();
             }
         });
     }

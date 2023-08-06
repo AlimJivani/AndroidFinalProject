@@ -32,6 +32,7 @@ public class login extends AppCompatActivity {
     FirebaseAuth mAuth;
     TextView forgotPassword, signUpClick;
     ProgressBar pBar;
+    FirebaseUser currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,38 +47,53 @@ public class login extends AppCompatActivity {
         signUpClick = findViewById(R.id.signUpClick);
         pBar = findViewById(R.id.pBar);
 
-        loginButtonClick.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                pBar.setVisibility(View.VISIBLE);
-                String email, password;
-                email =  String.valueOf(loginEmailTextInput.getText());
-                password =  String.valueOf(loginPasswordTextInput.getText());
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
 
-                if (validateUser(email, password)){
-                    loginUser(email, password);
-                }else{
-                    pBar.setVisibility(View.GONE);
+        if (currentUser != null) {
+            // User is logged in, navigate to ProductDetails page
+            Intent intent = new Intent(this, productDisplay.class);
+            startActivity(intent);
+            finish();
+        }else{
+
+            loginButtonClick.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    pBar.setVisibility(View.VISIBLE);
+                    String email, password;
+                    email =  String.valueOf(loginEmailTextInput.getText());
+                    password =  String.valueOf(loginPasswordTextInput.getText());
+
+                    if (validateUser(email, password)){
+                        loginUser(email, password);
+                    }else{
+                        pBar.setVisibility(View.GONE);
+                    }
                 }
-            }
-        });
+            });
 
-        signUpClick.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(login.this, SignUp.class);
-                startActivity(intent);
-            }
-        });
+            signUpClick.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(login.this, SignUp.class);
+                    startActivity(intent);
+                    finish();
+                }
+            });
 
-        forgotPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent= new Intent(login.this, forgotPassword.class);
-                startActivity(intent);
-                finish();
-            }
-        });
+            forgotPassword.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent= new Intent(login.this, forgotPassword.class);
+                    startActivity(intent);
+                    finish();
+                }
+            });
+
+        }
+
+
     }
 
     private void loginUser(String email, String password) {
@@ -91,9 +107,9 @@ public class login extends AppCompatActivity {
                                 Toast.makeText(login.this, "Login Successful", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(login.this, productDisplay.class);
                                 startActivity(intent);
+                                finish();
                             } else {
-                                loginEmailTextInput.setError("We email you verification link please verify your email address.");
-//                                Toast.makeText(login.this, "We email you verification link please verify your email address.", Toast.LENGTH_SHORT).show();
+                                loginEmailTextInput.setError("Your email is not verification please verify your email address.");
                             }
                         } else {
                             loginPasswordTextInput.setError("Authentication failed. Please check your credentials.");

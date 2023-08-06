@@ -40,7 +40,7 @@
             tools:layout_editor_absoluteY="408dp">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/productList"
+                android:id="@+id/cartProductList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/them_red"
@@ -54,6 +54,11 @@
 
         </ScrollView>
     </LinearLayout>
+
+    <include
+        android:id="@+id/include"
+        layout="@layout/top_nav"/>
+
 
 
 </RelativeLayout>

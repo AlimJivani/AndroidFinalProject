@@ -28,9 +28,6 @@ public class productDisplay extends AppCompatActivity {
     myAdapter myAdapter;
     ArrayList<productData> products;
     private ProgressBar pBar;
-    private int currentPage = 1;
-    private int itemsPerPage = 5;
-    private boolean isLoading = false;
 
 
 
@@ -51,47 +48,23 @@ public class productDisplay extends AppCompatActivity {
         recyclerView.setAdapter(myAdapter);
         pBar = findViewById(R.id.pBar);
 
-        loadNextPage();
-
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-
-                LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-                int visibleItemCount = layoutManager.getChildCount();
-                int totalItemCount = layoutManager.getItemCount();
-                int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
-
-                // Check if the last item is visible and load the next page
-                if (!isLoading && (visibleItemCount + firstVisibleItemPosition) >= totalItemCount && firstVisibleItemPosition >= 0)  {
-                    isLoading = true;
-                    Log.d(TAG, "totalItemCount" + totalItemCount);
-                    loadNextPage();
-                }
-            }
-        });
+        loadData();
 
     }
 
-    private void loadNextPage() {
-        // Query Firebase to load the next page of products
+    private void loadData() {
+        recyclerView.setVisibility(View.GONE);
         pBar.setVisibility(View.VISIBLE);
-        Query query = db.orderByKey().startAt("p" + ((currentPage - 1) * itemsPerPage)).limitToFirst(itemsPerPage);
 
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
+        db.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     productData product = dataSnapshot.getValue(productData.class);
-
                     if (product != null) {
                         products.add(product);
                     }
                 }
-
-                // Update the current page and notify the adapter of changes
-                currentPage++;
                 myAdapter.notifyDataSetChanged();
             }
 
@@ -100,7 +73,7 @@ public class productDisplay extends AppCompatActivity {
                 Log.e("FirebaseError", "Failed to read value.", error.toException());
             }
         });
-        isLoading = false;
+        recyclerView.setVisibility(View.VISIBLE);
         pBar.setVisibility(View.GONE);
     }
 
