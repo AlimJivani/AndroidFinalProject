@@ -3,10 +3,11 @@ package com.example.alimjivanifinalproject;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -14,6 +15,7 @@ public class checkout extends AppCompatActivity {
 
     EditText fullName, phoneNumber, address, city, postalCode, province, cardNumber, holderName, expiryMonth, expiryYear, cardCvv;
     Button CheckoutClick;
+    FirebaseAuth myAuthentication;
     private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
     @Override
@@ -21,6 +23,8 @@ public class checkout extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkout);
 
+        myAuthentication = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = myAuthentication.getCurrentUser();
 
         fullName = findViewById(R.id.checkoutFullName);
         phoneNumber = findViewById(R.id.checkoutPhoneNumber);
@@ -33,33 +37,42 @@ public class checkout extends AppCompatActivity {
         expiryMonth = findViewById(R.id.checkoutExpiryDate);
         expiryYear = findViewById(R.id.checkoutExpiryMonth);
         cardCvv = findViewById(R.id.checkoutCvv);
-
         CheckoutClick = findViewById(R.id.CheckoutClick);
 
-        CheckoutClick.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String fullNameValue = fullName.getText().toString();
-                int phoneNumberValue = Integer.parseInt(phoneNumber.getText().toString());
-                String addressValue = address.getText().toString();
-                String cityValue = city.getText().toString();
-                String postalCodeValue = postalCode.getText().toString();
-                String provinceValue = province.getText().toString();
-                String cardNumberValue = cardNumber.getText().toString();
-                String holderNameValue = holderName.getText().toString();
-                String expiryMonthValue = expiryMonth.getText().toString();
-                String expiryYearValue = expiryYear.getText().toString();
-                String cardCvvValue = cardCvv.getText().toString();
-            }
+        CheckoutClick.setOnClickListener(v -> {
+            String fullNameStr = fullName.getText().toString();
+            int phoneNumberInt = Integer.parseInt(phoneNumber.getText().toString());
+            String addressStr = address.getText().toString();
+            String cityStr = city.getText().toString();
+            String postalCodeStr = postalCode.getText().toString();
+            String provinceStr = province.getText().toString();
+            String cardNumberStr = cardNumber.getText().toString();
+            String holderNameStr = holderName.getText().toString();
+            String expiryMonthStr = expiryMonth.getText().toString();
+            String expiryYearStr = expiryYear.getText().toString();
+            String cardCvvStr = cardCvv.getText().toString();
 
-//            UserDetails userDetails = new UserDetails(
-//                    fullNameValue, phoneNumberValue, addressValue, cityValue, postalCodeValue,
-//                    provinceValue, cardNumberValue, holderNameValue, expiryMonthValue,
-//                    expiryYearValue, cardCvvValue
-//            );
+            CardDetails cardDetails = new CardDetails(
+                    cardNumber.getText().toString(),
+                    holderName.getText().toString(),
+                    expiryMonth.getText().toString(),
+                    expiryYear.getText().toString(),
+                    cardCvv.getText().toString()
+            );
 
-            String userId = databaseReference.child("users").push().getKey();
-         });
+            UserDetails userDetails = new UserDetails(
+                    fullNameStr,
+                    phoneNumberInt,
+                    addressStr,
+                    cityStr,
+                    postalCodeStr,
+                    provinceStr,
+                    cardDetails
+            );
 
+            databaseReference.child("UserDetails").child(currentUser.getUid()).setValue(userDetails);
+
+        });
     }
+
 }
