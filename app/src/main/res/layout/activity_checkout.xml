@@ -193,7 +193,8 @@
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
                 <EditText
                     android:id="@+id/checkoutExpiryDate"
@@ -242,6 +243,43 @@
                     android:padding="10dp"
                     android:textColor="@color/black"
                     android:textColorHint="@color/black" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/checkoutCouponCode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/input_text_bg"
+                    android:drawableTint="@color/them_red"
+                    android:ems="10"
+                    android:hint="Coupon"
+                    android:inputType="number"
+                    android:padding="10dp"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/black" />
+
+                <Button
+                    android:id="@+id/checkoutCouponClick"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="2dp"
+                    android:backgroundTint="@color/them_red"
+                    android:drawableTint="@color/white"
+                    android:text="Apply"
+                    android:textColor="@color/white"
+                    android:textSize="24sp"
+                    android:drawableEnd="@drawable/coupon_icon"
+                    app:cornerRadius="12dp" />
 
             </LinearLayout>
         </LinearLayout>
