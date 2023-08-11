@@ -7,10 +7,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,6 +31,9 @@ public class productDisplay extends AppCompatActivity {
     myAdapter myAdapter;
     ArrayList<productData> products;
     private ProgressBar pBar;
+    View includeNav;
+    ImageView backClick, cartClick;
+    TextView navHeading;
 
 
 
@@ -35,6 +41,14 @@ public class productDisplay extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_display);
+
+
+        includeNav = findViewById(R.id.includeNav);
+        backClick = includeNav.findViewById(R.id.backClick);
+        cartClick = includeNav.findViewById(R.id.cartClick);
+        navHeading = includeNav.findViewById(R.id.navHeading);
+        backClick.setVisibility(View.GONE);
+        navHeading.setText("Products");
 
         recyclerView = findViewById(R.id.productList);
         db = FirebaseDatabase.getInstance().getReference("Products");
@@ -50,7 +64,15 @@ public class productDisplay extends AppCompatActivity {
 
         loadData();
 
-    }
+        cartClick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(productDisplay.this, AddToCart.class);
+                startActivity(intent);
+            }
+        });
+}
+
 
     private void loadData() {
         recyclerView.setVisibility(View.GONE);

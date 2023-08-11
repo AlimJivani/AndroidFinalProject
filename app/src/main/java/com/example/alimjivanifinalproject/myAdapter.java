@@ -81,10 +81,4 @@ public class myAdapter extends RecyclerView.Adapter<myAdapter.MyViewHolder> {
             productPrice = itemView.findViewById(R.id.productPrice);
         }
     }
-
-    public void addProducts(ArrayList<productData> newProducts) {
-        int startPosition = products.size();
-        products.addAll(newProducts);
-        notifyItemRangeInserted(startPosition, newProducts.size());
-    }
 }

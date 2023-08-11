@@ -1,51 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/them_red"
+    android:paddingVertical="18dp"
+    android:paddingHorizontal="5dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/them_red"
-    android:padding="18dp">
+    android:baselineAligned="false"
+    android:orientation="horizontal">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/backClick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        app:srcCompat="@drawable/back_icon"
+        android:layout_marginHorizontal="3dp"/>
 
-        <ImageView
-            android:id="@+id/backClick"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/AppName"
-            app:layout_constraintHorizontal_bias="0.027"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/back_icon" />
+    <TextView
+        android:id="@+id/navHeading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:layout_weight="1"
+        android:textColor="@color/black"
+        android:layout_gravity="center_vertical"
+        android:textSize="20sp"
+        android:layout_marginHorizontal="3dp"/>
 
-        <TextView
-            android:id="@+id/AppName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="34dp"
-            android:layout_marginEnd="216dp"
-            android:text="TextView"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/addToCartClick"
-            app:layout_constraintStart_toEndOf="@+id/backClick"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/addToCartClick"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/AppName"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/cart_icon" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</RelativeLayout>
+    <ImageView
+        android:id="@+id/cartClick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        app:srcCompat="@drawable/cart_icon"
+        android:layout_marginHorizontal="3dp"/>
+</LinearLayout>

@@ -8,7 +8,7 @@
     tools:context=".productDetail">
 
     <include
-        android:id="@+id/include"
+        android:id="@+id/includeNav"
         layout="@layout/top_nav"/>
 
     <ScrollView

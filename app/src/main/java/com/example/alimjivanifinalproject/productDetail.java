@@ -1,15 +1,11 @@
 package com.example.alimjivanifinalproject;
 
-import static android.content.ContentValues.TAG;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,15 +17,15 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.IntStream;
 
 public class productDetail extends AppCompatActivity {
 
-    ImageView mainImage, subImage1, subImage2, subImage3, addToCard;
+    ImageView mainImage, subImage1, subImage2, subImage3, addToCard, backClick;
     TextView detailName, detailDescription, detailPrice;
-    Button buyNow;
     DatabaseReference pReference;
     productData pData;
+    View includeNav;
+    TextView navHeading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +40,9 @@ public class productDetail extends AppCompatActivity {
         detailDescription = findViewById(R.id.detailDescription);
         detailPrice = findViewById(R.id.detailPrice);
         addToCard = findViewById(R.id.addToCart);
+        includeNav = findViewById(R.id.includeNav);
+        navHeading = includeNav.findViewById(R.id.navHeading);
+        backClick = includeNav.findViewById(R.id.backClick);
 
         pReference = FirebaseDatabase.getInstance().getReference();
         Intent intent = getIntent();
@@ -57,6 +56,7 @@ public class productDetail extends AppCompatActivity {
 
                     pData = snapshot.getValue(productData.class);
 
+                    navHeading.setText(pData.getName());
                     detailName.setText(pData.getName());
                     detailDescription.setText(pData.getDescription());
                     detailPrice.setText(pData.getPrice());
@@ -83,15 +83,15 @@ public class productDetail extends AppCompatActivity {
             }
         });
 
-        addToCard.setOnClickListener(new View.OnClickListener() {
+
+        backClick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(productDetail.this, AddToCart.class);
+                Intent intent = new Intent(productDetail.this, productDisplay.class);
                 startActivity(intent);
                 finish();
             }
         });
-
     }
 
     public void onImageClick(View view) {
