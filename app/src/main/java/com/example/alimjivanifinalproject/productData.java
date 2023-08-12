@@ -54,5 +54,4 @@ public class productData {
     public void setPrice(String price) {
         this.price = price;
     }
-
 }

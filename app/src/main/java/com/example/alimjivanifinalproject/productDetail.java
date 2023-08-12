@@ -83,6 +83,17 @@ public class productDetail extends AppCompatActivity {
             }
         });
 
+        addToCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CartManager cartManager = CartManager.getInstance();
+                CartItem cartItem = new CartItem(pData.getName(), pData.getPrice(), pData.getImage().get(0), pData.getId());
+                cartManager.addToCart(cartItem);
+                Intent intent = new Intent(productDetail.this, AddToCart.class);
+                startActivity(intent);
+            }
+        });
+
 
         backClick.setOnClickListener(new View.OnClickListener() {
             @Override
