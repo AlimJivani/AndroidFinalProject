@@ -51,7 +51,6 @@ public class login extends AppCompatActivity {
         currentUser = mAuth.getCurrentUser();
 
         if (currentUser != null) {
-            // User is logged in, navigate to ProductDetails page
             Intent intent = new Intent(this, productDisplay.class);
             startActivity(intent);
             finish();

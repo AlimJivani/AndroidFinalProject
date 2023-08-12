@@ -46,7 +46,6 @@ public class SignUp extends AppCompatActivity {
         currentUser = mAuth.getCurrentUser();
 
         if (currentUser != null) {
-            // User is logged in, navigate to ProductDetails page
             Intent intent = new Intent(this, productDisplay.class);
             startActivity(intent);
             finish();
@@ -96,30 +95,25 @@ public class SignUp extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
                             if (user != null) {
-                                // Send verification email
                                 user.sendEmailVerification()
                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> verificationTask) {
                                                 if (verificationTask.isSuccessful()) {
-                                                    // Verification email sent successfully
                                                     pBar.setVisibility(View.GONE);
                                                     Toast.makeText(SignUp.this, "Successfully SignUp. Verification email sent.",
                                                             Toast.LENGTH_SHORT).show();
                                                 } else {
-                                                    // Failed to send verification email
                                                     Toast.makeText(SignUp.this, "Failed to send verification email.",
                                                             Toast.LENGTH_SHORT).show();
                                                 }
                                             }
                                         });
                             } else {
-                                // User object is null
                                 Toast.makeText(SignUp.this, "Authentication failed.",
                                         Toast.LENGTH_SHORT).show();
                             }
                         } else {
-                            // Failed to create user account
                             Toast.makeText(SignUp.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         }
@@ -139,12 +133,10 @@ public class SignUp extends AppCompatActivity {
             signUpEmailTextInput.setError("Enter Valid Email");
             checkErrors[0] = false;
         } else if(checkErrors[0]){
-            // Using asynchronous email validation because to check email it takes time and at end it will return true so I have to use this asynchronous
             CompletableFuture<Boolean> emailValidationFuture = CompletableFuture.supplyAsync(() -> {
                 try {
-                    // Fetch sign-in methods for the email
                     Task<SignInMethodQueryResult> task = mAuth.fetchSignInMethodsForEmail(email);
-                    Tasks.await(task); // Wait for the task to complete
+                    Tasks.await(task);
 
                     if (task.isSuccessful()) {
                         SignInMethodQueryResult result = task.getResult();
