@@ -1,6 +1,5 @@
 package com.example.alimjivanifinalproject;
 
-import static android.content.ContentValues.TAG;
 
 import android.content.Context;
 import android.content.Intent;
@@ -58,7 +57,7 @@ public class myAdapter extends RecyclerView.Adapter<myAdapter.MyViewHolder> {
         int imageResourceId1 = context.getResources().getIdentifier(imageName1, "drawable", context.getPackageName());
         holder.productImage.setImageResource(imageResourceId1);
         holder.productName.setText(pData.getName());
-        holder.productPrice.setText(pData.getPrice());
+        holder.productPrice.setText(String.format("$%.2f", pData.getPrice()));
         holder.productDescription.setText(pData.getDescription());
     }
 

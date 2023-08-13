@@ -7,7 +7,7 @@ public class productData {
 
     private String name;
     private String description;
-    private String price;
+    private double price;
     private String id;
     private List<String> image;
 
@@ -47,11 +47,11 @@ public class productData {
         this.description = description;
     }
 
-    public String getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 }

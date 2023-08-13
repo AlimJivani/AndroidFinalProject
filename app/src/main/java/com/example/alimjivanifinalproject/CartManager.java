@@ -1,16 +1,18 @@
 package com.example.alimjivanifinalproject;
 
+import static android.content.ContentValues.TAG;
+
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class CartManager {
     public static CartManager instance;
     public List<CartItem> cartItems;
-    public String totalPayment;
 
     public CartManager() {
         cartItems = new ArrayList<>();
-        totalPayment = "0";
     }
 
     public static synchronized CartManager getInstance() {
@@ -29,15 +31,19 @@ public class CartManager {
         for (CartItem existingItem : cartItems) {
             if (existingItem.getId().equals(newItem.getId())) {
                 existingItem.increaseQuantity();
-                totalPayment += existingItem.getPrice();
                 return;
             }
         }
         cartItems.add(newItem);
-        totalPayment += newItem.getPrice();
     }
 
-    public String getTotalPayment() {
-        return totalPayment;
+    public double calculateTotal() {
+
+        double total = 0;
+        for (CartItem item : cartItems) {
+            total += item.getPrice() * item.getQuantity();
+        }
+        return total;
     }
+
 }

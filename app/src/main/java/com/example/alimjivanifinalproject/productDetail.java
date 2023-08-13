@@ -20,7 +20,7 @@ import java.util.List;
 
 public class productDetail extends AppCompatActivity {
 
-    ImageView mainImage, subImage1, subImage2, subImage3, addToCard, backClick;
+    ImageView mainImage, subImage1, subImage2, subImage3, addToCard, backClick, cartClick;
     TextView detailName, detailDescription, detailPrice;
     DatabaseReference pReference;
     productData pData;
@@ -42,6 +42,7 @@ public class productDetail extends AppCompatActivity {
         addToCard = findViewById(R.id.addToCart);
         includeNav = findViewById(R.id.includeNav);
         navHeading = includeNav.findViewById(R.id.navHeading);
+        cartClick = includeNav.findViewById(R.id.cartClick);
         backClick = includeNav.findViewById(R.id.backClick);
 
         pReference = FirebaseDatabase.getInstance().getReference();
@@ -59,7 +60,7 @@ public class productDetail extends AppCompatActivity {
                     navHeading.setText(pData.getName());
                     detailName.setText(pData.getName());
                     detailDescription.setText(pData.getDescription());
-                    detailPrice.setText(pData.getPrice());
+                    detailPrice.setText(String.format("$%.2f", pData.getPrice()));
 
                     List<String> imageNames = pData.getImage();
                     String mainImg = imageNames.get(0);
@@ -87,13 +88,21 @@ public class productDetail extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 CartManager cartManager = CartManager.getInstance();
-                CartItem cartItem = new CartItem(pData.getName(), pData.getPrice(), pData.getImage().get(0), pData.getId());
+                CartItem cartItem = new CartItem(pData.getName(), pData.getPrice(), pData.getImage().get(0), pData.getId(), 1);
                 cartManager.addToCart(cartItem);
                 Intent intent = new Intent(productDetail.this, AddToCart.class);
                 startActivity(intent);
             }
         });
 
+
+        cartClick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(productDetail.this, AddToCart.class);
+                startActivity(intent);
+            }
+        });
 
         backClick.setOnClickListener(new View.OnClickListener() {
             @Override

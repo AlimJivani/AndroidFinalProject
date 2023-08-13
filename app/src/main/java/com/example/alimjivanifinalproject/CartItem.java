@@ -2,7 +2,12 @@ package com.example.alimjivanifinalproject;
 
 public class CartItem {
     private String name;
-    private String price;
+    private double price;
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
     private int quantity;
 
     public String getName() {
@@ -13,11 +18,11 @@ public class CartItem {
         this.name = name;
     }
 
-    public String getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
@@ -42,11 +47,11 @@ public class CartItem {
     private String id;
 
 
-    public CartItem(String name, String price, String image, String id) {
+    public CartItem(String name, double price, String image, String id, int quantity) {
         this.name = name;
         this.price = price;
         this.image = image;
-        this.quantity = 1;
+        this.quantity = quantity;
         this.id = id;
     }
 
@@ -54,13 +59,15 @@ public class CartItem {
         return quantity;
     }
 
-    public void increaseQuantity() {
+    public int increaseQuantity() {
         quantity++;
+        return quantity;
     }
 
-    public void decreaseQuantity() {
+    public int decreaseQuantity() {
         if (quantity > 1) {
             quantity--;
         }
+        return quantity;
     }
 }

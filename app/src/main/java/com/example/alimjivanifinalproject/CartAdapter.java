@@ -12,13 +12,19 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder>{
     private List<CartItem> cartItems;
+    private AddToCart addToCartActivity;
 
-    public CartAdapter(List<CartItem> cartItems) {
+    public CartAdapter(List<CartItem> cartItems,  AddToCart activity) {
         this.cartItems = cartItems;
+        this.addToCartActivity = activity;
     }
 
     @NonNull
@@ -36,17 +42,18 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         String imageName = cartItem.getImage();
         int imageResourceId1 = holder.itemView.getContext().getResources().getIdentifier(imageName, "drawable", holder.itemView.getContext().getPackageName());
         holder.productImage.setImageResource(imageResourceId1);
-
         holder.productName.setText(cartItem.getName());
-        holder.productPrice.setText(String.valueOf(cartItem.getPrice()));
-
+        DecimalFormat decimalFormat = new DecimalFormat("0.00");
+        holder.productPrice.setText(String.valueOf(decimalFormat.format(cartItem.getPrice() * cartItem.getQuantity())));
         holder.totalItemsCount.setText(String.valueOf(cartItem.getQuantity()));
 
         holder.addItemsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 cartItem.increaseQuantity();
+                saveCartItemsToFirestore();
                 notifyDataSetChanged();
+                updatePaymentTotal();
             }
         });
 
@@ -54,9 +61,31 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
             @Override
             public void onClick(View view) {
                 cartItem.decreaseQuantity();
+                saveCartItemsToFirestore();
                 notifyDataSetChanged();
+                updatePaymentTotal();
             }
         });
+
+    }
+
+    private void updatePaymentTotal() {
+        addToCartActivity.updatePaymentTotal();
+    }
+
+    public void saveCartItemsToFirestore() {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference cartItemsRef = database.getReference("cartItems");
+
+        for (CartItem cartItem : cartItems) {
+            DatabaseReference cartItemRef = cartItemsRef.child(cartItem.getName());
+
+            cartItemRef.child("name").setValue(cartItem.getName());
+            cartItemRef.child("price").setValue(cartItem.getPrice());
+            cartItemRef.child("quantity").setValue(cartItem.getQuantity());
+            cartItemRef.child("image").setValue(cartItem.getImage());
+            cartItemRef.child("id").setValue(cartItem.getId());
+        }
 
     }
 

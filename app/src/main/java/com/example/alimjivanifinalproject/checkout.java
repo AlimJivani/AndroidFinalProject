@@ -2,19 +2,24 @@ package com.example.alimjivanifinalproject;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.DecimalFormat;
+
 public class checkout extends AppCompatActivity {
 
     EditText fullName, phoneNumber, address, city, postalCode, province, cardNumber, holderName, expiryMonth, expiryYear, cardCvv;
     Button CheckoutClick;
+    TextView paymentTotal;
     FirebaseAuth myAuthentication;
     private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
@@ -38,6 +43,7 @@ public class checkout extends AppCompatActivity {
         expiryYear = findViewById(R.id.checkoutExpiryMonth);
         cardCvv = findViewById(R.id.checkoutCvv);
         CheckoutClick = findViewById(R.id.CheckoutClick);
+        paymentTotal = findViewById(R.id.paymentTotal);
 
         CheckoutClick.setOnClickListener(v -> {
             String fullNameStr = fullName.getText().toString();
@@ -73,6 +79,11 @@ public class checkout extends AppCompatActivity {
             databaseReference.child("UserDetails").child(currentUser.getUid()).setValue(userDetails);
 
         });
+
+        Intent intent = getIntent();
+        double pTotal = intent.getDoubleExtra("paymentTotal", 0.0);
+        DecimalFormat decimalFormat = new DecimalFormat("0.00");
+        paymentTotal.setText("Total: $" + decimalFormat.format(pTotal));
     }
 
 }
