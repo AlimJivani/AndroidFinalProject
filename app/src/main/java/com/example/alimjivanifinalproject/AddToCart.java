@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -27,8 +28,8 @@ public class AddToCart extends AppCompatActivity {
     DatabaseReference db;
     View includeNav;
     TextView navHeading, paymentTotal;
-    ImageView backClick, cartClick;
-
+    ImageView backClick, cartClick, logoutClick;
+    FirebaseAuth mAuth;
     Button CheckoutClick;
 
 
@@ -43,6 +44,7 @@ public class AddToCart extends AppCompatActivity {
         backClick = includeNav.findViewById(R.id.backClick);
         paymentTotal = findViewById(R.id.paymentTotal);
         CheckoutClick = findViewById(R.id.CheckoutClick);
+        logoutClick = includeNav.findViewById(R.id.logoutClick);
 
         recyclerView = findViewById(R.id.cartProductList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -55,11 +57,24 @@ public class AddToCart extends AppCompatActivity {
         updatePaymentTotal();
         cartAdapter.notifyDataSetChanged();
 
-        cartClick.setOnClickListener(new View.OnClickListener() {
+        cartClick.setVisibility(View.GONE);
+        backClick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(AddToCart.this, AddToCart.class);
+                Intent intent = new Intent(AddToCart.this, productDisplay.class);
                 startActivity(intent);
+            }
+        });
+
+        logoutClick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mAuth = FirebaseAuth.getInstance();
+                mAuth.signOut();
+                Intent intent = new Intent(AddToCart.this, login.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
             }
         });
 

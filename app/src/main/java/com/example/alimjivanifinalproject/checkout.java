@@ -4,9 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -19,8 +22,11 @@ public class checkout extends AppCompatActivity {
 
     EditText fullName, phoneNumber, address, city, postalCode, province, cardNumber, holderName, expiryMonth, expiryYear, cardCvv;
     Button CheckoutClick;
+    ImageView backClick, cartClick, logoutClick;
     TextView paymentTotal;
     FirebaseAuth myAuthentication;
+    View includeNav;
+    TextView navHeading;
     private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
     @Override
@@ -45,18 +51,14 @@ public class checkout extends AppCompatActivity {
         CheckoutClick = findViewById(R.id.CheckoutClick);
         paymentTotal = findViewById(R.id.paymentTotal);
 
+        includeNav = findViewById(R.id.includeNav);
+        navHeading = includeNav.findViewById(R.id.navHeading);
+        cartClick = includeNav.findViewById(R.id.cartClick);
+        backClick = includeNav.findViewById(R.id.backClick);
+        logoutClick = includeNav.findViewById(R.id.logoutClick);
+
         CheckoutClick.setOnClickListener(v -> {
-            String fullNameStr = fullName.getText().toString();
-            int phoneNumberInt = Integer.parseInt(phoneNumber.getText().toString());
-            String addressStr = address.getText().toString();
-            String cityStr = city.getText().toString();
-            String postalCodeStr = postalCode.getText().toString();
-            String provinceStr = province.getText().toString();
-            String cardNumberStr = cardNumber.getText().toString();
-            String holderNameStr = holderName.getText().toString();
-            String expiryMonthStr = expiryMonth.getText().toString();
-            String expiryYearStr = expiryYear.getText().toString();
-            String cardCvvStr = cardCvv.getText().toString();
+
 
             CardDetails cardDetails = new CardDetails(
                     cardNumber.getText().toString(),
@@ -67,17 +69,41 @@ public class checkout extends AppCompatActivity {
             );
 
             UserDetails userDetails = new UserDetails(
-                    fullNameStr,
-                    phoneNumberInt,
-                    addressStr,
-                    cityStr,
-                    postalCodeStr,
-                    provinceStr,
+                    fullName.getText().toString(),
+                    Integer.parseInt(phoneNumber.getText().toString()),
+                    address.getText().toString(),
+                    city.getText().toString(),
+                    postalCode.getText().toString(),
+                    province.getText().toString(),
                     cardDetails
             );
 
             databaseReference.child("UserDetails").child(currentUser.getUid()).setValue(userDetails);
+            Intent intent = new Intent(checkout.this, productDisplay.class);
+            startActivity(intent);
+            finish();
+            Toast.makeText(this, "Order Placed", Toast.LENGTH_SHORT).show();
 
+        });
+
+        cartClick.setVisibility(View.GONE);
+        backClick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(checkout.this, AddToCart.class);
+                startActivity(intent);
+            }
+        });
+        logoutClick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                myAuthentication = FirebaseAuth.getInstance();
+                myAuthentication.signOut();
+                Intent intent = new Intent(checkout.this, login.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
+            }
         });
 
         Intent intent = getIntent();

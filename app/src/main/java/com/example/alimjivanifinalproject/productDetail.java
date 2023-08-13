@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -20,12 +21,13 @@ import java.util.List;
 
 public class productDetail extends AppCompatActivity {
 
-    ImageView mainImage, subImage1, subImage2, subImage3, addToCard, backClick, cartClick;
+    ImageView mainImage, subImage1, subImage2, subImage3, addToCard, backClick, cartClick, logoutClick;
     TextView detailName, detailDescription, detailPrice;
     DatabaseReference pReference;
     productData pData;
     View includeNav;
     TextView navHeading;
+    FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +46,7 @@ public class productDetail extends AppCompatActivity {
         navHeading = includeNav.findViewById(R.id.navHeading);
         cartClick = includeNav.findViewById(R.id.cartClick);
         backClick = includeNav.findViewById(R.id.backClick);
+        logoutClick = includeNav.findViewById(R.id.logoutClick);
 
         pReference = FirebaseDatabase.getInstance().getReference();
         Intent intent = getIntent();
@@ -92,6 +95,18 @@ public class productDetail extends AppCompatActivity {
                 cartManager.addToCart(cartItem);
                 Intent intent = new Intent(productDetail.this, AddToCart.class);
                 startActivity(intent);
+            }
+        });
+
+        logoutClick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mAuth = FirebaseAuth.getInstance();
+                mAuth.signOut();
+                Intent intent = new Intent(productDetail.this, login.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
             }
         });
 

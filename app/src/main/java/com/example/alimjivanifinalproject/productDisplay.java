@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -32,8 +33,10 @@ public class productDisplay extends AppCompatActivity {
     ArrayList<productData> products;
     private ProgressBar pBar;
     View includeNav;
-    ImageView backClick, cartClick;
+    ImageView backClick, cartClick, logoutClick;
     TextView navHeading;
+    FirebaseAuth mAuth;
+
 
 
 
@@ -45,6 +48,7 @@ public class productDisplay extends AppCompatActivity {
 
         includeNav = findViewById(R.id.includeNav);
         backClick = includeNav.findViewById(R.id.backClick);
+        logoutClick = includeNav.findViewById(R.id.logoutClick);
         cartClick = includeNav.findViewById(R.id.cartClick);
         navHeading = includeNav.findViewById(R.id.navHeading);
         backClick.setVisibility(View.GONE);
@@ -69,6 +73,19 @@ public class productDisplay extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(productDisplay.this, AddToCart.class);
                 startActivity(intent);
+            }
+        });
+
+
+        logoutClick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mAuth = FirebaseAuth.getInstance();
+                mAuth.signOut();
+                Intent intent = new Intent(productDisplay.this, login.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
             }
         });
 }

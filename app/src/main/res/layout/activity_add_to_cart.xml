@@ -43,7 +43,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignWithParentIfMissing="false"
-                android:layout_alignBaseline="@id/include"
+                android:layout_alignBaseline="@id/includeNav"
                 android:layout_marginBottom="50dp"
                 tools:layout_editor_absoluteY="408dp">
 
