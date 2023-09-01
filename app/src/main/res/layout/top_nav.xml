@@ -1,47 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/them_red"
-    android:paddingVertical="18dp"
-    android:paddingHorizontal="5dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/them_red"
     android:baselineAligned="false"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:paddingHorizontal="5dp"
+    android:paddingVertical="18dp">
 
     <ImageView
         android:id="@+id/backClick"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        app:srcCompat="@drawable/back_icon"
-        android:layout_marginHorizontal="3dp"/>
+        android:layout_marginHorizontal="3dp"
+        app:srcCompat="@drawable/back_icon" />
 
     <TextView
         android:id="@+id/navHeading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
-        android:layout_weight="1"
-        android:textColor="@color/black"
         android:layout_gravity="center_vertical"
-        android:textSize="20sp"
-        android:layout_marginHorizontal="3dp"/>
+        android:layout_marginHorizontal="3dp"
+        android:layout_weight="1"
+        android:text="TextView"
+        android:textColor="@color/black"
+        android:textSize="20sp" />
 
     <ImageView
         android:id="@+id/cartClick"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        app:srcCompat="@drawable/cart_icon"
-        android:layout_marginHorizontal="6dp"/>
+        android:layout_marginHorizontal="6dp"
+        app:srcCompat="@drawable/cart_icon" />
 
     <ImageView
         android:id="@+id/logoutClick"
         android:layout_width="wrap_content"
-        android:layout_marginHorizontal="6dp"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="6dp"
         android:background="@color/them_red"
         android:src="@drawable/logout_icon" />
 </LinearLayout>

@@ -65,7 +65,7 @@ public class CartItem {
     }
 
     public int decreaseQuantity() {
-        if (quantity > 1) {
+        if (quantity > 0) {
             quantity--;
         }
         return quantity;

@@ -7,8 +7,6 @@ public class CardDetails {
     public String expiryYear;
     public String cardCvv;
 
-    public CardDetails() {}
-
     public CardDetails(String cardNumber, String cardHolderName, String expiryMonth, String expiryYear, String cardCvv) {
         this.cardNumber = cardNumber;
         this.cardHolderName = cardHolderName;

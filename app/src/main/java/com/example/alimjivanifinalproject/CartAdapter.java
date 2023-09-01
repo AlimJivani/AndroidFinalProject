@@ -8,10 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -44,14 +47,13 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         holder.productImage.setImageResource(imageResourceId1);
         holder.productName.setText(cartItem.getName());
         DecimalFormat decimalFormat = new DecimalFormat("0.00");
-        holder.productPrice.setText(String.valueOf(decimalFormat.format(cartItem.getPrice() * cartItem.getQuantity())));
+        holder.productPrice.setText(String.valueOf("$" + decimalFormat.format(cartItem.getPrice() * cartItem.getQuantity())));
         holder.totalItemsCount.setText(String.valueOf(cartItem.getQuantity()));
 
         holder.addItemsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 cartItem.increaseQuantity();
-                saveCartItemsToFirestore();
                 notifyDataSetChanged();
                 updatePaymentTotal();
             }
@@ -60,9 +62,16 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         holder.removeItemsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                cartItem.decreaseQuantity();
-                saveCartItemsToFirestore();
-                notifyDataSetChanged();
+                int items = cartItem.decreaseQuantity();
+                if (items == 0) {
+                    if (position != RecyclerView.NO_POSITION) {
+                        cartItems.remove(position);
+                        notifyItemRemoved(position);
+                        Toast.makeText(addToCartActivity, "Item Removed", Toast.LENGTH_SHORT).show();
+                    }
+                }else{
+                    notifyDataSetChanged();
+                }
                 updatePaymentTotal();
             }
         });
@@ -73,20 +82,24 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         addToCartActivity.updatePaymentTotal();
     }
 
-    public void saveCartItemsToFirestore() {
+    public void saveCartItemsToDb() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference cartItemsRef = database.getReference("cartItems");
+        FirebaseAuth myAuthentication;
+        myAuthentication = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = myAuthentication.getCurrentUser();
+        if (currentUser != null) {
 
-        for (CartItem cartItem : cartItems) {
-            DatabaseReference cartItemRef = cartItemsRef.child(cartItem.getName());
+            for (CartItem cartItem : cartItems) {
+                DatabaseReference cartItemsRef = database.getReference("cartItem").child(currentUser.getUid()).child(cartItem.getId());
+                cartItemsRef.child("name").setValue(cartItem.getName());
+                cartItemsRef.child("price").setValue(cartItem.getPrice());
+                cartItemsRef.child("quantity").setValue(cartItem.getQuantity());
+                cartItemsRef.child("image").setValue(cartItem.getImage());
+            }
 
-            cartItemRef.child("name").setValue(cartItem.getName());
-            cartItemRef.child("price").setValue(cartItem.getPrice());
-            cartItemRef.child("quantity").setValue(cartItem.getQuantity());
-            cartItemRef.child("image").setValue(cartItem.getImage());
-            cartItemRef.child("id").setValue(cartItem.getId());
+        }else{
+            Toast.makeText(addToCartActivity, "Failed", Toast.LENGTH_SHORT).show();
         }
-
     }
 
     @Override

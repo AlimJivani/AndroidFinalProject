@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -51,13 +52,13 @@ public class AddToCart extends AppCompatActivity {
 
         cartManager = CartManager.getInstance();
         cartAdapter = new CartAdapter(cartManager.getCartItems(), this);
-        cartAdapter.saveCartItemsToFirestore();
 
         recyclerView.setAdapter(cartAdapter);
         updatePaymentTotal();
         cartAdapter.notifyDataSetChanged();
 
         cartClick.setVisibility(View.GONE);
+        navHeading.setText("Cart");
         backClick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -81,6 +82,7 @@ public class AddToCart extends AppCompatActivity {
         CheckoutClick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                cartAdapter.saveCartItemsToDb();
                 Intent intent = new Intent(AddToCart.this, checkout.class);
                 intent.putExtra("paymentTotal", updatePaymentTotal());
                 startActivity(intent);
@@ -98,7 +100,10 @@ public class AddToCart extends AppCompatActivity {
 
     public void loadData() {
 
-        db = FirebaseDatabase.getInstance().getReference("cartItems");
+        FirebaseAuth myAuthentication;
+        myAuthentication = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = myAuthentication.getCurrentUser();
+        db = FirebaseDatabase.getInstance().getReference("UserDetails").child(currentUser.getUid()).child("cartItem");
         db.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -120,6 +125,5 @@ public class AddToCart extends AppCompatActivity {
             }
         });
     }
-
 
 }
