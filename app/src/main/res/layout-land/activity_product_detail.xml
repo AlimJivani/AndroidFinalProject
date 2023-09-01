@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".productDetail">
+
+    <include
+        android:id="@+id/includeNav"
+        layout="@layout/top_nav"/>
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="85dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/mainImage"
+                android:layout_width="404dp"
+                android:layout_height="453dp"
+                app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.428"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/s22_1" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal"
+                android:padding="2dp"
+                app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.05"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/mainImage">
+
+                <ImageView
+                    android:id="@+id/subImage1"
+                    android:layout_width="90dp"
+                    android:layout_height="90dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:contentDescription="Image 1"
+                    android:focusable="true"
+                    android:onClick="onImageClick"
+                    app:srcCompat="@drawable/s22_1" />
+
+                <ImageView
+                    android:id="@+id/subImage2"
+                    android:layout_width="90dp"
+                    android:layout_height="90dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:contentDescription="Image 2"
+                    android:focusable="true"
+                    android:onClick="onImageClick"
+                    app:srcCompat="@drawable/s22_2" />
+
+                <ImageView
+                    android:id="@+id/subImage3"
+                    android:layout_width="90dp"
+                    android:layout_height="90dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:contentDescription="Image 3"
+                    android:focusable="true"
+                    android:onClick="onImageClick"
+                    app:srcCompat="@drawable/s22_3" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/linearLayout3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginBottom="150dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+                <TextView
+                    android:id="@+id/detailName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="3dp"
+                    android:layout_weight="1"
+                    android:text="Samsung S22"
+                    android:textColor="@color/black"
+                    android:textSize="32sp" />
+
+                <TextView
+                    android:id="@+id/detailPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="3dp"
+                    android:text="$999"
+                    android:textColor="@color/black"
+                    android:textSize="30sp" />
+
+                <TextView
+                    android:id="@+id/detailDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="2dp"
+                    android:text="Display 50MP + 12MP + 10MP | 10MP Front Camera 3700 mAh Lithium-ion Battery Octa Core Processor Display 50MP + 12MP + 10MP | 10MP Front Display 50MP + 12MP + 10MP | 10MP Front Camera 3700 mAh Lithium-ion Battery Octa Core Processor Display 50MP + 12MP + 10MP | 10MP Front Display 50MP + 12MP + 10MP | 10MP Front Camera 3700 mAh Lithium-ion Battery Octa Core Processor Display 50MP + 12MP + 10MP | 10MP Front"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
+
+<!--        <Button-->
+<!--            android:id="@+id/buyNow"-->
+<!--            android:layout_width="300dp"-->
+<!--            android:layout_height="50dp"-->
+<!--            android:layout_gravity="center_horizontal"-->
+<!--            android:layout_margin="2dp"-->
+<!--            android:backgroundTint="@color/them_red"-->
+<!--            android:drawableTint="@color/white"-->
+<!--            android:text="Buy Now"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textSize="24sp"-->
+<!--            app:cornerRadius="12dp" />-->
+
+        <ImageView
+            android:id="@+id/addToCart"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="2dp"
+            android:background="@color/them_red"
+            android:backgroundTint="@color/them_red"
+            android:drawableTint="@color/white"
+            android:src="@drawable/add_cart_icon"
+            android:textColor="@color/white"
+            android:textSize="24sp" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
